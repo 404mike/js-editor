@@ -63,15 +63,16 @@ table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
 .chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+/*****************************************************************************************/
+
+
+#wrapper{width:960px;margin:0 auto;border:1px solid #ccc;}
+#controls{height:90px;}
+#ta{width:955px;height:300px;}
 
 
 
-
-
-
-
-
-
+/*******************************************************************************************/
 @media only screen and (min-width: 35em) {
   
 
