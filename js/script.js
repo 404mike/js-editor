@@ -7,6 +7,25 @@
 	panda = {
 
 		lang : ['en','cy'],
+		current_lang : '',
+
+		lang_setup : function(){
+			var _this = this;
+			_this.current_lang = _this.lang[0];
+
+			lng_string = '<select id="lang_switch">';
+
+			for(var i = 0; i < _this.lang.length; i++){
+				lng_string += '<option value="'+_this.lang[i]+'">'+_this.lang[i]+'</option>';
+			}
+
+			lng_string += '</select>';
+			$('#lang').html(lng_string);
+		},
+
+		lang_change : function(){
+			panda.current_lang = $('#lang_switch').val();
+		},
 	
 		abbr : function(){
 			$('#paste_container').html('');
@@ -51,7 +70,7 @@
 			var noCache = Date();
 
 			// Get abbrevations from json
-			$.getJSON("json/abbr/en.json",{format: "json", "noCache" : noCache},function(data) {
+			$.getJSON("json/abbr/"+panda.current_lang+".json",{format: "json", "noCache" : noCache},function(data) {
 				// Loop through each item in ta_text
 				// ignoring any placeholders
 				// check to see if the words match a possible abbreviation
@@ -66,7 +85,7 @@
 							if(ta_text[i].match(re))
 							{
 								//console.log('match ' + ta_text[i] + ' ' + value.abbr + ' ' + value.value);
-								option += '<option value="<abbr title=\''+value.value+'\'>'+ta_text[i]+'</abbr>">'+value.value+'</option>';
+								option += '<option value="<abbr lang=\''+panda.current_lang+'\' title=\''+value.value+'\'>'+ta_text[i]+'</abbr>">'+value.value+'</option>';
 							}
 						});		
 						if(option != '') ta_text[i] = '<select class="abbr_choice"><option value="'+ta_text[i]+'">'+ta_text[i]+'</option>'+option+'</select>';
@@ -95,6 +114,7 @@
 		},
 
 		entities : function(){
+			// List of html entities
 			entity_list = {
 				'Â' : '&Acirc;',
 				'Ê' : '&Ecirc;',
@@ -165,17 +185,49 @@
 				'ū' : '&#363;',
 				'ȳ' : '&#563;'		
 			};	
+
+			// Get textarea text
+			ta_string = $('#ta').val();
+			ta_string_arr = [];
+			ta_string_complete = '';
+
+			// split textarea text into array
+			for (var i = 0; i < ta_string.length; i++){
+			    c = ta_string.charAt(i);
+			    ta_string_arr.push(c);
+			}
+			
+			// Loop through array checking each item to 
+			// see if it matches a html entity
+			// if we find a match replace it with the HTML equivalent
+			for(var i = 0; i < ta_string_arr.length; i++){
+				if(entity_list[ta_string_arr[i]] != undefined) 
+					ta_string_arr[i] = entity_list[ta_string_arr[i]];
+
+				ta_string_complete += ta_string_arr[i];
+			}
+			$('#ta').val(ta_string_complete);
 		},
 
 		file_extension : function(){
+
+		},
+
+		table_of_contents : function(){
 
 		}
 
 	};
 
+	// Set up language settings
+	panda.lang_setup();
+
 	// Onclick handlers
 	$('#abbr').click(panda.abbr);
 	$('#confirm_abbr').click(panda.process_abbrs);
+	$('#entities').click(panda.entities);
+	$('#lang_switch').change(panda.lang_change);
+	$('#toc').click(panda.table_of_contents);
 
 })();
 

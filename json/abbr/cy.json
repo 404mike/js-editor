@@ -1,5 +1,10 @@
 {
-  "one": "Singular sensation",
-  "two": "Beady little eyes",
-  "three": "Little birds pitch by my doorstep"
+	"language" : "cy",
+	"abbr" : [
+		{"abbr" : "UK" , "value":"United Kingdom"},
+		{"abbr" : "LLGC", "value":"Llyfrgell Genedlaethol Cymru"},
+		{"abbr" : "CSS" , "value":"Cascading StyleSheet"},
+		{"abbr" : "CSS" , "value":"Another StyleSheet"},
+		{"abbr" : "foo" , "value":"bar"}
+	]
 }
