@@ -1,0 +1,22 @@
+/* Author:
+
+*/
+
+!(function(){
+
+	$('#abbr').click(panda.abbr);
+
+	panda = {
+	
+		abbr : function(){
+			console.log('fire');
+		},
+
+	};
+
+})();
+
+
+
+
+

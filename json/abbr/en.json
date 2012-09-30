@@ -1,0 +1,9 @@
+{
+	"language" : "en",
+	"abbr" : [
+		{"abbr" : "UK" , "value":"United Kingdom"},
+		{"abbr" : "CSS" , "value":"Cascading StyleSheet"},
+		{"abbr" : "CSS" , "value":"Another StyleSheet"},
+		{"abbr" : "foo" , "value":"bar"}
+	]
+}

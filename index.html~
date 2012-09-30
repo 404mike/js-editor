@@ -21,17 +21,8 @@
 
 	<div role="main" id="wrapper">
 		<div id="controls">
-			<button class="button green square" id="abbr">Abbreviation</button>
-			<button class="button green square" id="abbr">Entities</button>
 		</div>
-		<textarea id="ta">sdf sdfs df <span class="sdfs"> test</span>
-<div class="tab0">CSS code formatter</div><div class="tab2">CSS code compressor</div><abbr title="test">Test</abbr>
-<stuff><div id=\"LiveArea\">hello stackoverflow!</div></stuff><abbr title="hello">hello</abbr></textarea>
-
-		<div id="paste">
-			<div id="paste_container"></div>
-			<button id="confirm_abbr" class="button green square">Confirm</button>
-		</div>
+		<textarea id="ta"></textarea>
 	</div>
 
 	<footer>
