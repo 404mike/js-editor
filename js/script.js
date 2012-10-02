@@ -214,7 +214,49 @@
 		},
 
 		table_of_contents : function(){
+			var toc = "<div id='table_of_contents'>\n";
+			var level = 0;
+			
+			// First we need to copy the contents of the textarea to a div. In this case
+			// the div is 'tocDiv' the purpose is that the generation of table of contents is
+			// easier to do on a div rather than inside the textarea.
+			$("#toc_container").html($("#ta").val());
 
+			var tocDivContent = $("#toc_container").html();
+					
+			document.getElementById("toc_container").innerHTML = tocDivContent.replace(/<h([1-6])>(.+?)<\/h(\d)>/gi,
+
+				function toc_regex_generation (str, openLevel2, titleText, closeLevel) 
+				{
+					if (openLevel2 > level) 
+					{
+						toc += (new Array(openLevel2 - level + 1)).join("<ul>\n");
+					} else 
+					{
+						toc += (new Array(level - openLevel2 + 1)).join("</ul>\n");
+					}
+
+					level = parseInt(openLevel2);
+
+					var anchor = titleText.replace(/ /g, "_");
+					toc += "\t<li><a href=\"#" + anchor + "\">" + titleText	+ "</a></li>\n";
+					
+					return "<span><a name=\"" + anchor + "\"></a></span>\n<h" + openLevel2 + ">" + titleText + "</h" + closeLevel + ">";
+				}); //End of replace regex
+				
+
+			toc += (new Array(level + 1)).join("</ul>\n</div>\n");
+
+			document.getElementById("toc_list").innerHTML += toc;
+
+			// Get the genrated table of content from the div + the HTML from the div underneath
+			var toc_content = document.getElementById("ta").value=document.getElementById("toc_list").innerHTML;
+			var div_content = document.getElementById("ta").value=document.getElementById("toc_container").innerHTML;
+			// Clean the divs - set them to be empty
+			document.getElementById("toc_container").innerHTML= "";
+			document.getElementById("toc_list").innerHTML= "";
+			// Get the content from the toc and theDiv div and put the HTML back into the textarea
+			document.getElementById("ta").value = toc_content + div_content;
 		}
 
 	};
