@@ -1,5 +1,5 @@
 /* Author:
-
+@404mike
 */
 
 !(function(){
@@ -80,11 +80,9 @@
 						ta_text[i].match(/[^###PANDA_TAGS###(0-9)]/gi))
 					{
 						$.each(data.abbr,function(index, value){
-							//console.log(words[i] + ' ' + value.abbr + ' ' + value.value);
 							var re = new RegExp(value.abbr, 'ig');
 							if(ta_text[i].match(re))
 							{
-								//console.log('match ' + ta_text[i] + ' ' + value.abbr + ' ' + value.value);
 								option += '<option value="<abbr lang=\''+panda.current_lang+'\' title=\''+value.value+'\'>'+ta_text[i]+'</abbr>">'+value.value+'</option>';
 							}
 						});		
@@ -210,7 +208,30 @@
 		},
 
 		file_extension : function(){
+			text = $('#ta').val();
+			doc_links = text.match(/<a (.*?)>(.*?)<\/a>/gi);
+			for(var i = 0; i < doc_links.length; i++){
+				// Match PDF files
+				if(doc_links[i].match(/<a (.*?)\.pdf(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (<abbr title='Portable Document Format'>PDF</abbr>)");
+				// Match Microsoft Word Documents
+				if(doc_links[i].match(/<a (.*?)\.doc(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (<abbr title='Microsoft Word Document'>DOC</abbr>)");	
+				// Match Microsoft Word Documents - docx
+				if(doc_links[i].match(/<a (.*?)\.docx(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (<abbr title='Microsoft Word Document'>DOC</abbr>)");	
+				// Match Microsoft Powerpoint Documents
+				if(doc_links[i].match(/<a (.*?)\.ppt(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (<abbr title='Microsoft Powerpoint Document'>PPT</abbr>)");					
+				// Match Microsoft Excel Documents
+				if(doc_links[i].match(/<a (.*?)\.xls(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (<abbr title='Microsoft Excel Document'>XLS</abbr>)");	
+				// Match ZIP file
+				if(doc_links[i].match(/<a (.*?)\.zip(.*?)>(.*?)<\/a>/gi)) 
+					text = text.replace(doc_links[i],doc_links[i]+" (ZIP File)");																		
+			}
 
+			$('#ta').val(text);
 		},
 
 		table_of_contents : function(){
@@ -270,6 +291,7 @@
 	$('#entities').click(panda.entities);
 	$('#lang_switch').change(panda.lang_change);
 	$('#toc').click(panda.table_of_contents);
+	$('#doc_links').click(panda.file_extension);
 
 })();
 
