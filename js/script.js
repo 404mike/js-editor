@@ -35,6 +35,8 @@
 			tags_holder = {};
 			ta_text = [];
 			text = $('#ta').val();
+			preview = '';
+			possible_abbr ={};
 
 			// Check for existing abbreviations and add them to
 			// abbr_holder object and replace with a placeholder in the text
@@ -86,7 +88,11 @@
 								option += '<option value="<abbr lang=\''+panda.current_lang+'\' title=\''+value.value+'\'>'+ta_text[i]+'</abbr>">'+value.value+'</option>';
 							}
 						});		
-						if(option != '') ta_text[i] = '<select class="abbr_choice"><option value="'+ta_text[i]+'">'+ta_text[i]+'</option>'+option+'</select>';
+						if(option != '') 
+						{
+							ta_text[i] = '<select id="panda'+i+'" class="abbr_choice"><option value="'+ta_text[i]+'">'+ta_text[i]+'</option>'+option+'</select>';
+							possible_abbr['###PANDA_POSS_ABBR'+i+'###'] = '###PANDA_POSS_ABBR'+i+'###';
+						}
 					}
 
 					// Replace all the palceholders with the orginal tags
@@ -94,21 +100,27 @@
 						ta_text[i] = abbr_holder[ta_text[i]];
 
 					if( ta_text[i].match(/###PANDA_TAGS###.*/gi))
-						ta_text[i] = tags_holder[ta_text[i]];
-
-					$('#paste_container').append(ta_text[i] + ' ');
-				}
+						ta_text[i] = tags_holder[ta_text[i]];					
+					
+					preview += ta_text[i] + ' ';
+				}				
+			}).success(function(){
+				$('#paste_container').html(preview);
 			});	
 		},
 
 		process_abbrs : function(){
+			loc = preview;
 			$('.abbr_choice').each(function(){
-				$(this).replaceWith($(this).val());
+				a = this;
+				var re = new RegExp('\<select id\="'+a.id+'"(.*?)\<\/select\>', 'ig');
+				loc = loc.replace(re,$(this).val());
 			});
-			$('#ta').val($('#paste_container').html());
+
+			$('#ta').val(loc);
 			$('#paste_container').html('');
 			$('#controls,#ta').slideDown();
-			$('#paste').fadeOut();
+			$('#paste').fadeOut();			
 		},
 
 		entities : function(){
